@@ -4,19 +4,34 @@ FROM nvcr.io/nvidia/pytorch:24.05-py3
 # Set working directory
 WORKDIR /workspace
 
-# Copy environment file and project code
-COPY environment.yaml ./
+# Update system packages and install dependencies
+RUN apt-get update && apt-get install -y \
+    wget \
+    ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy project files
 COPY . ./
 
-# Install mamba for fast conda operations
-RUN conda install -y mamba -c conda-forge
-
-# Create and activate environment, install dependencies
-RUN mamba env update -n base -f environment.yaml && \
-    conda clean -afy
-
-# Install Jupyter Lab and notebook extensions
-RUN pip install --no-cache-dir jupyterlab notebook ipykernel
+# Install Python dependencies directly with pip (more reliable than conda in containers)
+RUN pip install --no-cache-dir \
+    jupyterlab \
+    notebook \
+    ipykernel \
+    librosa==0.10.2.post1 \
+    opencv-python-headless==4.10.0.84 \
+    scikit-image==0.25.0 \
+    scikit-learn==1.6.0 \
+    imageio==2.36.1 \
+    imageio-ffmpeg==0.5.1 \
+    soundfile==0.13.0 \
+    tensorrt==8.6.1 \
+    cython==3.0.11 \
+    cuda-python==12.6.2.post1 \
+    filetype==1.2.0 \
+    tqdm==4.67.1 \
+    colored \
+    polygraphy
 
 # Expose Jupyter port
 EXPOSE 8888
