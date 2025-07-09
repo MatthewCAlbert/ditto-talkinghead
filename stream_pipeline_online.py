@@ -217,9 +217,10 @@ class StreamSDK:
         )
 
         # ======== Video Writer ========
+        fps = kwargs.get("fps", 25)
         self.output_path = output_path
         self.tmp_output_path = output_path + ".tmp.mp4"
-        self.writer = VideoWriterByImageIO(self.tmp_output_path)
+        self.writer = VideoWriterByImageIO(self.tmp_output_path, fps=fps)
         self.writer_pbar = tqdm(desc="writer")
 
         # ======== Audio Feat Buffer ========
