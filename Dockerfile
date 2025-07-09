@@ -14,7 +14,6 @@ COPY . ./
 
 # Install dependencies exactly as specified in README.md pip section
 RUN pip install --no-cache-dir \
-    tensorrt==8.6.1 \
     librosa \
     tqdm \
     filetype \
